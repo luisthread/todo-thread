@@ -1,6 +1,6 @@
 import create from 'zustand';
 import axios from 'axios';
-const api = 'http://192.168.0.5:4000/todo';
+const api = process.env.REACT_APP_SERVER_API;
 
 export const useTodos = create((set, get) => ({
 	todos: [],
@@ -14,7 +14,7 @@ export const useTodos = create((set, get) => ({
 				}
 			};
 
-			const response = await fetch(`${api}/${userId}`, options);
+			const response = await fetch(`${api}/todo/${userId}`, options);
 			const data = await response.json();
 			const { status, payload } = data;
 			if (status === 200) {
@@ -37,7 +37,7 @@ export const useTodos = create((set, get) => ({
 				}
 			};
 
-			const response = await axios.post(`${api}`, body, opts);
+			const response = await axios.post(`${api}/todo`, body, opts);
 			const { status } = response.data;
 			if (status === 200) {
 				await get().getUserTodos(todo.userId, token);
@@ -59,7 +59,7 @@ export const useTodos = create((set, get) => ({
 					Authorization: `Bearer ${token}`
 				}
 			};
-			const response = await axios.patch(api, body, opts);
+			const response = await axios.patch(`${api}/todo`, body, opts);
 			const { status } = response.data;
 			if (status === 200) {
 				console.log('complete success');
@@ -84,7 +84,7 @@ export const useTodos = create((set, get) => ({
 					Authorization: `Bearer ${token}`
 				}
 			};
-			const response = await axios.patch(api, body, opts);
+			const response = await axios.patch(`${api}/todo`, body, opts);
 			const { status } = response.data;
 			if (status === 200) {
 				console.log('updated success');
@@ -104,7 +104,7 @@ export const useTodos = create((set, get) => ({
 					Authorization: `Bearer ${token}`
 				}
 			};
-			const response = await axios.delete(`${api}/${userId}/${id}`, opts);
+			const response = await axios.delete(`${api}/todo/${userId}/${id}`, opts);
 			const { status } = response.data;
 			if (status === 200) {
 				console.log('delete success');
@@ -119,7 +119,7 @@ export const useTodos = create((set, get) => ({
 	},
 	validateToken: async (token) => {
 		try {
-			const url = 'http://192.168.0.5:4000/user/token';
+			const url = `${api}/user/token`;
 			const opts = {
 				headers: {
 					Authorization: `Bearer ${token}`

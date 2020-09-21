@@ -1,7 +1,6 @@
 import create from 'zustand';
 import axios from 'axios';
-
-const api = 'http://192.168.0.5:4000/user';
+const api = `${process.env.REACT_APP_SERVER_API}/user`;
 
 export const useUser = create((set, get) => ({
 	token: null,
@@ -31,6 +30,7 @@ export const useUser = create((set, get) => ({
 	},
 	signin: async (values) => {
 		try {
+			console.log(api);
 			const { username, password } = values;
 			const response = await axios.post(`${api}/signin`, {
 				username,

@@ -10,6 +10,7 @@ const Home = () => {
 		<Row>
 			<Col xs={24} style={{ textAlign: 'center', marginTop: '1rem' }}>
 				<Title>Todo Thread</Title>
+
 				<Title level={3}>Your todos in one place</Title>
 				<br />
 				<Space>
