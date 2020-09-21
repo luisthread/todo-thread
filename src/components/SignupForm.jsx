@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
+import { useUser } from '../store/userStore';
+import { Redirect } from 'react-router-dom';
 
 const SignupForm = () => {
-	const onFinish = (values) => {
-		// TODO: create new user...
-		alert(values);
+	const signup = useUser((state) => state.signup);
+	const [ isLogged, setIsLogged ] = useState(false);
+	const [ error, setError ] = useState(null);
+
+	const onFinish = async (values) => {
+		const logged = await signup(values);
+		console.log(logged);
+		setIsLogged(logged.status);
+		setError(logged.error);
 	};
+
+	if (isLogged) {
+		return <Redirect to="/dash" />;
+	}
 
 	return (
 		<Form onFinish={onFinish}>
@@ -61,7 +73,7 @@ const SignupForm = () => {
 				rules={[
 					{
 						required: true,
-						message: 'Please input yout password'
+						message: 'Please input your password'
 					},
 					{
 						min: 8,
@@ -87,7 +99,7 @@ const SignupForm = () => {
 								return Promise.resolve();
 							}
 
-							return Promise.reject("The two passwords don't match");
+							return Promise.reject("The passwords don't match");
 						}
 					})
 				]}
@@ -100,6 +112,7 @@ const SignupForm = () => {
 					Create account
 				</Button>
 			</Form.Item>
+			{error && <p>{error}</p>}
 		</Form>
 	);
 };

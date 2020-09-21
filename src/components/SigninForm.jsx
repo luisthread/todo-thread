@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { useUser } from '../store/userStore';
 
 const SigninForm = () => {
-	const onFinish = (values) => {
-		alert(values);
+	const signin = useUser((state) => state.signin);
+	const [ isLogged, setIsLogged ] = useState(false);
+	const [ error, setError ] = useState(null);
+
+	const onFinish = async (values) => {
+		const logged = await signin(values);
+		console.log(logged);
+		setIsLogged(logged.status);
+		setError(logged.error);
 	};
+
+	if (isLogged) {
+		return <Redirect to="/dash" />;
+	}
 
 	return (
 		<Form onFinish={onFinish}>
@@ -37,6 +50,7 @@ const SigninForm = () => {
 					Signin
 				</Button>
 			</Form.Item>
+			{error && <p>{error}</p>}
 		</Form>
 	);
 };

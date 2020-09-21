@@ -5,6 +5,12 @@ import { useUser } from '../store/userStore';
 
 const Navbar = () => {
 	const token = useUser((state) => state.token);
+	const signout = useUser((state) => state.signout);
+
+	const handleSignout = () => {
+		signout();
+	};
+
 	return (
 		<Menu mode="horizontal">
 			<Menu.Item key="home">
@@ -15,18 +21,18 @@ const Navbar = () => {
 					<Menu.Item key="dashboard">
 						<Link to="/dash">Dashboard</Link>
 					</Menu.Item>
-					<Button type="primary">Signout</Button>
+					<Button type="primary" onClick={handleSignout}>
+						Signout
+					</Button>
 				</Fragment>
 			) : (
 				<Fragment>
 					<Menu.Item key="signin">
 						<Link to="/signin">Signin</Link>
 					</Menu.Item>
-					<Menu.Item key="signup">
-						<Button type="primary">
-							<Link to="/signup">Signup</Link>
-						</Button>
-					</Menu.Item>
+					<Button type="primary">
+						<Link to="/signup">Signup</Link>
+					</Button>
 				</Fragment>
 			)}
 		</Menu>

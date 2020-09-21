@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
@@ -9,6 +9,14 @@ import { useUser } from './store/userStore';
 
 const App = () => {
 	const token = useUser((state) => state.token);
+	const getLocalUser = useUser((state) => state.getLocalUser);
+
+	useEffect(
+		() => {
+			getLocalUser();
+		},
+		[ getLocalUser ]
+	);
 	const Routes = () => (
 		<Fragment>
 			<Route path="/" exact>
@@ -42,7 +50,7 @@ const App = () => {
 						/>
 					)}
 			/>
-			<Route path="/dash" render={() => (token ? <Dashboard /> : <Redirect to="/home" />)} />
+			<Route path="/dash" render={() => (token ? <Dashboard /> : <Redirect to="/" />)} />
 		</Fragment>
 	);
 
