@@ -7,12 +7,15 @@ const SignupForm = () => {
 	const signup = useUser((state) => state.signup);
 	const [ isLogged, setIsLogged ] = useState(false);
 	const [ error, setError ] = useState(null);
+	const [ isLoading, setIsLoading ] = useState(false);
 
 	const onFinish = async (values) => {
+		setIsLoading(true);
 		const logged = await signup(values);
 		console.log(logged);
 		setIsLogged(logged.status);
 		setError(logged.error);
+		setIsLoading(false);
 	};
 
 	if (isLogged) {
@@ -108,7 +111,7 @@ const SignupForm = () => {
 				<Input.Password />
 			</Form.Item>
 			<Form.Item>
-				<Button type="primary" htmlType="submit">
+				<Button type="primary" htmlType="submit" loading={isLoading}>
 					Create account
 				</Button>
 			</Form.Item>

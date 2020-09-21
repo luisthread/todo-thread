@@ -4,10 +4,10 @@ import Todo from './Todo';
 import TodoFilter from './TodoFilter';
 const { Title } = Typography;
 
-const TodoList = ({ todos }) => {
+const TodoList = ({ todos, userId, token, setIsEditing, changeCompletedTodo }) => {
 	const [ filter, setFilter ] = useState(1);
 	return (
-		<Card title="My Todos" extra={<TodoFilter filter={filter} setFilter={setFilter} />}>
+		<Card title="Todos" extra={<TodoFilter filter={filter} setFilter={setFilter} />}>
 			{todos.length ? (
 				todos
 					.filter((todo) => {
@@ -26,7 +26,16 @@ const TodoList = ({ todos }) => {
 
 						return current;
 					})
-					.map((todo) => <Todo key={todo.id} todo={todo} />)
+					.map((todo) => (
+						<Todo
+							key={todo.id}
+							todo={todo}
+							userId={userId}
+							token={token}
+							setIsEditing={setIsEditing}
+							changeCompletedTodo={changeCompletedTodo}
+						/>
+					))
 			) : (
 				<Title level={5}>Empty</Title>
 			)}

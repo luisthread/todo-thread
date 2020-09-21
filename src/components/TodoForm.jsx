@@ -1,24 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Form, Input } from 'antd';
 import { useTodos } from '../store/todosStore';
+import shallow from 'zustand/shallow';
 
-const TodoForm = ({ userId, token }) => {
-	const addNewTodo = useTodos((state) => state.addNewTodo);
-	const [ saved, setSaved ] = useState(true);
+const TodoForm = ({ userId, token, isEditing, setIsEditing }) => {
+	const [ addNewTodo, updateTodo ] = useTodos(
+		(state) => [ state.addNewTodo, state.updateTodo ],
+		shallow
+	);
 	const [ isLoading, setIsLoading ] = useState(false);
+	const [ text, setText ] = useState(null);
 
-	const onFinish = async (values) => {
+	useEffect(
+		() => {
+			setText(isEditing ? isEditing.text : '');
+		},
+		[ isEditing ]
+	);
+
+	const saveTodo = async (values) => {
 		setIsLoading(true);
-		setSaved(true);
+
 		const todo = { text: values.text, userId, completed: false };
-		const isSaved = await addNewTodo(todo, token);
-		setSaved(isSaved);
+		await addNewTodo(todo, token);
+
+		setText('');
+		setIsLoading(false);
+	};
+
+	const updateATodo = async (values) => {
+		setIsLoading(true);
+		await updateTodo(values.text, userId, isEditing.id, token);
+		setIsEditing(null);
 		setIsLoading(false);
 	};
 
 	return (
-		<Card title="New todo">
-			<Form onFinish={onFinish}>
+		<Card title={isEditing ? 'Updating todo' : 'Create new todo'}>
+			<Form onFinish={isEditing ? updateATodo : saveTodo}>
 				<Form.Item
 					name="text"
 					label="Todo"
@@ -29,14 +48,13 @@ const TodoForm = ({ userId, token }) => {
 						}
 					]}
 				>
-					<Input />
+					<Input value={text} onChange={(e) => setText(e.target.value)} />
 				</Form.Item>
 				<Form.Item>
 					<Button type="primary" htmlType="submit" loading={isLoading}>
-						Add todo
+						{isEditing ? 'Update' : 'Add'}
 					</Button>
 				</Form.Item>
-				{!saved && <p>Todo save failed!</p>}
 			</Form>
 		</Card>
 	);

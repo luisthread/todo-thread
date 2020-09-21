@@ -5,8 +5,8 @@ import SigninForm from '../components/SigninForm';
 const Signin = () => {
 	return (
 		<Row justify="center">
-			<Col span={6}>
-				<Card title="Welcome back!">
+			<Col xs={22} sm={14} md={12} lg={8}>
+				<Card title="Welcome back!" style={{ marginTop: '1rem' }}>
 					<SigninForm />
 				</Card>
 			</Col>

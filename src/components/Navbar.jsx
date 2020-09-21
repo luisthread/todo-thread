@@ -30,9 +30,11 @@ const Navbar = () => {
 					<Menu.Item key="signin">
 						<Link to="/signin">Signin</Link>
 					</Menu.Item>
-					<Button type="primary">
-						<Link to="/signup">Signup</Link>
-					</Button>
+					<Menu.Item key="singup">
+						<Button type="primary">
+							<Link to="/signup">Signup</Link>
+						</Button>
+					</Menu.Item>
 				</Fragment>
 			)}
 		</Menu>

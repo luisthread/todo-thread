@@ -1,7 +1,7 @@
 import create from 'zustand';
 import axios from 'axios';
 
-const api = 'http://localhost:4000/user';
+const api = 'http://192.168.0.5:4000/user';
 
 export const useUser = create((set) => ({
 	token: null,
@@ -24,7 +24,6 @@ export const useUser = create((set) => ({
 				return { status: true, error: null };
 			}
 		} catch (error) {
-			console.log('userStore.signup.error', error);
 			return { status: false, error: 'username or email already exist' };
 		}
 
@@ -46,7 +45,6 @@ export const useUser = create((set) => ({
 				return { status: true, error: null };
 			}
 		} catch (error) {
-			console.log('userStore.signin.error', error);
 			return { status: false, error: 'Bad credentials' };
 		}
 		return { status: false, error: 'Bad credentials' };
@@ -59,7 +57,6 @@ export const useUser = create((set) => ({
 	getLocalUser: () => {
 		const user = JSON.parse(localStorage.getItem('user'));
 		const token = localStorage.getItem('token');
-		console.log('localuser:', user, token);
 		if (!user || !token) {
 			return;
 		}

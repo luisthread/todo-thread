@@ -50,12 +50,15 @@ const App = () => {
 						/>
 					)}
 			/>
-			<Route path="/dash" render={() => (token ? <Dashboard /> : <Redirect to="/" />)} />
+			<Route
+				path="/dash"
+				render={() => (token ? <Dashboard /> : <Redirect to="/signin" />)}
+			/>
 		</Fragment>
 	);
 
 	return (
-		<div id="App">
+		<div id="App" style={{ background: '#f2f2f2', height: '100vh' }}>
 			<Navbar />
 			<Routes />
 		</div>
