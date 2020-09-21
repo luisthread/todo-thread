@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const api = 'http://192.168.0.5:4000/user';
 
-export const useUser = create((set) => ({
+export const useUser = create((set, get) => ({
 	token: null,
 	user: null,
 	signup: async (values) => {
@@ -54,13 +54,29 @@ export const useUser = create((set) => ({
 		localStorage.removeItem('user');
 		localStorage.removeItem('token');
 	},
-	getLocalUser: () => {
-		const user = JSON.parse(localStorage.getItem('user'));
-		const token = localStorage.getItem('token');
-		if (!user || !token) {
-			return;
-		}
+	getLocalUser: async () => {
+		try {
+			const user = JSON.parse(localStorage.getItem('user'));
+			const token = localStorage.getItem('token');
+			if (!user || !token) {
+				return;
+			}
 
-		set({ user, token });
+			const opts = {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			};
+
+			const response = await axios.get(`${api}/token`, opts);
+			console.log(response.data);
+			if (response.data.auth === true) {
+				set({ user, token });
+			} else {
+				get().signout();
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }));

@@ -7,9 +7,13 @@ import shallow from 'zustand/shallow';
 const { Text } = Typography;
 
 const Todo = ({ todo, userId, token, setIsEditing, changeCompletedTodo }) => {
-	const completeTodo = useTodos((state) => state.completeTodo, shallow);
-	const deleteATodo = () => {
-		console.log('delete todo to: ', todo.userId);
+	const [ completeTodo, deleteTodo ] = useTodos(
+		(state) => [ state.completeTodo, state.deleteTodo ],
+		shallow
+	);
+	const deleteATodo = async () => {
+		console.log(userId, todo.id, token);
+		await deleteTodo(userId, todo.id, token);
 	};
 	const updateATodo = () => {
 		setIsEditing(todo);
