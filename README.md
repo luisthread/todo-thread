@@ -1,6 +1,6 @@
 # Todo Thread
 MERN Stack app with authentication.
 
-[https://distracted-jones-08f774.netlify.app/](https://distracted-jones-08f774.netlify.app/)
+Live demo: [https://todo-thread-auth.netlify.app/](https://todo-thread-auth.netlify.app/)
 
 ![./src/assets/main.png](./src/assets/main.png)
